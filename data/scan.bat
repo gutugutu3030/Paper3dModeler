@@ -1,0 +1,1 @@
+"C:\Program Files (x86)\Epson Software\Document Capture\JobRunner.exe" /J /JobName:"PUI43DPrinter" /DS:"EPSON GT-S650" /S:cmd:console
