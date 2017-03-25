@@ -72,25 +72,46 @@ class Thinning {
     //        distMap[i][j]=dist(a.x, a.y, b.x, b.y);
     //      }
     //    }
-    for (int i=0; i<distMap.length; i++) {
-      final RefPoint rp=refPoint1.get(i);
-      Collections.sort(refPoint2, new Comparator<RefPoint>() {
-        public int compare(RefPoint a, RefPoint b) {
-          return (int)dist(a.x, a.y, rp.x, rp.y)-(int)dist(b.x, b.y, rp.x, rp.y);
+    if (true) {
+      for (int i=0; i<distMap.length; i++) {
+        final RefPoint rp=refPoint1.get(i);
+        Collections.sort(refPoint2, new Comparator<RefPoint>() {
+          public int compare(RefPoint a, RefPoint b) {
+            return (int)dist(a.x, a.y, rp.x, rp.y)-(int)dist(b.x, b.y, rp.x, rp.y);
+          }
+        }
+        );
+        //index1,2,3をdistMapに書く
+        for (int j=1; j<=2; j++) {
+          RefPoint rp1=refPoint2.get(j);
+          int index=refPoint1.indexOf(rp1);
+          if (distMap[min(index, i)][max(index, i)]!=0) {
+            continue;
+          }
+          distMap[min(index, i)][max(index, i)]=dist(rp1.x, rp1.y, rp.x, rp.y);
         }
       }
-      );
-      //index1,2,3をdistMapに書く
-      int cnt=0;
-      for (int j=1; j<refPoint2.size (); j++) {
-        RefPoint rp1=refPoint2.get(j);
-        int index=refPoint1.indexOf(rp1);
-        if (distMap[min(index, i)][max(index, i)]!=0) {
-          continue;
+    } else {
+      for (int i=0; i<distMap.length; i++) {
+        final RefPoint rp=refPoint1.get(i);
+        Collections.sort(refPoint2, new Comparator<RefPoint>() {
+          public int compare(RefPoint a, RefPoint b) {
+            return (int)dist(a.x, a.y, rp.x, rp.y)-(int)dist(b.x, b.y, rp.x, rp.y);
+          }
         }
-        distMap[min(index, i)][max(index, i)]=dist(rp1.x, rp1.y, rp.x, rp.y);
-        if (cnt++==2) {
-          break;
+        );
+        //index1,2,3をdistMapに書く
+        int cnt=0;
+        for (int j=1; j<refPoint2.size (); j++) {
+          RefPoint rp1=refPoint2.get(j);
+          int index=refPoint1.indexOf(rp1);
+          if (distMap[min(index, i)][max(index, i)]!=0) {
+            continue;
+          }
+          distMap[min(index, i)][max(index, i)]=dist(rp1.x, rp1.y, rp.x, rp.y);
+          if (cnt++==2) {
+            break;
+          }
         }
       }
     }

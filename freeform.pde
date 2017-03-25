@@ -4,9 +4,9 @@ String getStrokeString(MatOfPoint mop) {
 
 
 ArrayList<StrokeParts> extractFreeStroke(PImage img) {
-  if (!jikki) {
-    new DebugWindow(this, "extractStrokeImage", img);
-  }
+//  if (!jikki) {
+//    new DebugWindow(this, "extractStrokeImage", img);
+//  }
 
   int window=4;
   int map[][]=new int[img.width/window][img.height/window];

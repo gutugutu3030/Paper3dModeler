@@ -12,31 +12,55 @@ void initOpenCV() {
 ArrayList<StrokeParts> topStroke;
 ArrayList<StrokeParts> frontStroke;
 Drawing drawing;
+
+
 void scanImage(PImage img) {
+  scanImage(img, null);
+}
+void scanImage(PImage img, Map<String, Object> test) {
   try {
-    setDrawingImageOri(img);
-    getTopAndFrontImage(img, 3);//topImageとfrontImageを取得
+    if (test==null) {
+      setDrawingImageOri(img);
+    }
+    getTopAndFrontImage(img, 3);//topImageとfrontImageとoptionImageを取得
+
+    Object showDebugWindow=getTestMap(test, "showDebugWindow");
+    ImgWindow imgWindow=null;
+    if (showDebugWindow==Boolean.TRUE) {
+      imgWindow=new ImgWindow(this, "ロードイメージ");
+      setDrawingImage(frontImage, topImage, optionImage);
+    }
+
     //    if (optionImage!=null) {
     //      imgWindow.setOptionImage(optionImage);
     //      new OptionWindow(this, optionImage);
     //    }
     //setDrawingImage(frontImage,topImage,optionImage);
-
-    //imgWindow.setFrontImage(frontImage);
-    //    imgWindow.setTopImage(topImage);
-    println("getimages");
-    setDrawingImage(frontImage, topImage, optionImage);
+    if (test==null) {
+      setDrawingImage(frontImage, topImage, optionImage);
+    }
 
     frontImage=processingImage4Stroke(frontImage);
     topImage=processingImage4Stroke(topImage);
-    //    imgWindow.setFrontImage(frontImage);
-    //    imgWindow.setTopImage(topImage);
+
+    if (showDebugWindow==Boolean.TRUE) {
+      imgWindow.setFrontImage(frontImage);
+      imgWindow.setTopImage(topImage);
+    }
+
     Map<String, Object> option=getOption(optionImage);
-    setOptionInfo(option);
+    if (test==null) {
+      setOptionInfo(option);
+      setState(2);
+    }
 
-    setState(2);
-
-    if ((Boolean)option.get("emboss")) {
+    Object freeformMode=getTestMap(test, "forceFreeformMode");
+    if (freeformMode==Boolean.TRUE) {
+      frontStroke=extractFreeStroke(frontImage);
+      topStroke=extractFreeStroke(topImage);
+      new StrokeInfoWindow(this,"strokeInfo",frontStroke,topStroke);
+      println("end");
+    } else if ((Boolean)option.get("emboss")) {
       float xy[]=emboss(frontImage, topImage);
       String str[]=loadStrings(dataPath("embossP.scad"));
       println(Arrays.toString(str));

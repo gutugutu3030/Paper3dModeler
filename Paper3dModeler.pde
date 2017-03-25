@@ -4,7 +4,8 @@
  OpenSCAD
  GTS650(EPSONスキャン・テスト環境のみ必要)
  */
-boolean jikki=true;
+boolean jikki=false;
+boolean test=true &&!jikki;
 String comPort="COM5";
 
 
@@ -48,6 +49,10 @@ void setup() {
 
   initOpenCV();
   initGraphillion();
+  if(test){
+    test();
+    return;
+  }
 
   if (!jikki) {
     new Thread(new MonitorPaper()).start();
